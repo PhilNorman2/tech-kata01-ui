@@ -26,13 +26,12 @@ export default function App() {
     if(valid) {
       handleSubscriberPost();
       setValid(false);
-      setInputColor('green');
-      setInputStatus('Subscriber Created.  Click Next to retrieve it');
     }
 
     if(post_data.id !== undefined && post_data.id) {
       navigate(`/subscriber/${post_data.id}`);
     }
+  
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [valid, post_data.id, navigate]);
   
