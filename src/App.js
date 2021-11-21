@@ -1,4 +1,4 @@
-import { Outlet, NavLink} from "react-router-dom";
+import { Outlet, useNavigate} from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { postSubscriber } from '../src/services/techKota01Service.js';
 
@@ -9,6 +9,8 @@ export default function App() {
     city: '',
     addedDate: '',
   });
+
+  const navigate = useNavigate();
 
   const [submitted, setSubmitted] = useState(false);
   const [valid, setValid] = useState(false);
@@ -29,11 +31,11 @@ export default function App() {
     }
 
     if(post_data.id !== undefined && post_data.id) {
-      console.log(`post_data.id: ${post_data.id}`);
+      navigate(`/subscriber/${post_data.id}`);
     }
-    
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [valid, handleSubscriberPost]);
+  }, [valid, post_data.id, navigate]);
+  
 
   const handleFirstNameInputChange = (event) => {
     event.persist();
@@ -79,17 +81,14 @@ export default function App() {
       })
       .then(data => {
         setPostData(JSON.parse(data));
-        if (response_status !== 200) {
-          throw Error(`${response_status_text} ${data}`);
-        }
-        
+        if (response_status !== 200)
+          throw Error(`${response_status_text} ${data}`);    
       })
       .catch(error => {
         setInputColor('red');
         setInputStatus(`${error}`);
       });
   };
-
 
   return (
    <div>
@@ -126,26 +125,12 @@ export default function App() {
           />
           { submitted && !values.addedDate && <span id='added-date-error'>Please enter the date subscriber was added</span> }
           <button className="form-field" type="submit">
-            Submit
+            Next
           </button>
           <span style={{color: input_color}}> {input_status} </span>
-          <nav
-          style={{
-            borderBottom: "solid 1px",
-            paddingBottom: "1rem"
-          }}
-          >
-          <NavLink 
-            to={`/subscriber/${post_data.id}`}
-            key={post_data.id}
-          > 
-            <button type="button" className="form-field">
-              Next
-            </button>
-          </NavLink>
+          <nav>
         </nav>
-        </form>
-        
+        </form>       
         <Outlet />
         </div>      
     </div>
