@@ -127,8 +127,6 @@ export default function App() {
             Next
           </button>
           <span style={{color: input_color}}> {input_status} </span>
-          <nav>
-        </nav>
         </form>       
         <Outlet />
         </div>      
